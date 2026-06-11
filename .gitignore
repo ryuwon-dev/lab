@@ -4,6 +4,7 @@
 
 local/
 tmp/
+.rendered/
 *.log
 *.pid
 *.state

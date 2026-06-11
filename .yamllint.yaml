@@ -1,7 +1,10 @@
 extends: default
 
+ignore: |
+  .rendered/
+
 rules:
-  line-length:
-    level: disable
+  document-start: disable
+  line-length: disable
   truthy:
     check-keys: false

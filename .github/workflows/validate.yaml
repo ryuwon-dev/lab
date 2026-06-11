@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Install YAML tooling
         run: |
@@ -19,10 +19,16 @@ jobs:
           python -m pip install yamllint
 
       - name: Install kubectl
-        uses: azure/setup-kubectl@v4
+        uses: azure/setup-kubectl@c0c8b32d33a5244f1e5947304550403b63930415
 
       - name: Lint YAML
         run: yamllint .
+
+      - name: Test public readiness gate
+        run: bash scripts/public-readiness-negative-test.sh
+
+      - name: Check public readiness
+        run: bash scripts/public-readiness.sh
 
       - name: Render platform kustomization
         run: |
@@ -30,7 +36,7 @@ jobs:
           kubectl kustomize platform > .rendered/platform.yaml
 
       - name: Validate Kubernetes schemas
-        uses: docker://ghcr.io/yannh/kubeconform:v0.6.7
+        uses: docker://ghcr.io/yannh/kubeconform@sha256:0925177fb05b44ce18574076141b5c3d83235e1904d3f952182ac99ddc45762c
         with:
           args: -summary -ignore-missing-schemas .rendered/platform.yaml
 
@@ -38,18 +44,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
-      - name: Run actionlint
-        uses: rhysd/actionlint@v1
+      - name: Download actionlint
+        id: get_actionlint
+        run: bash <(curl -sSfL https://raw.githubusercontent.com/rhysd/actionlint/914e7df21a07ef503a81201c76d2b11c789d3fca/scripts/download-actionlint.bash) 1.7.12 "$RUNNER_TEMP"
+        shell: bash
+
+      - name: Check workflow files
+        run: ${{ steps.get_actionlint.outputs.executable }} -color
+        shell: bash
 
   secret-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
 
       - name: Run gitleaks
-        uses: docker://ghcr.io/gitleaks/gitleaks:v8.30.0
+        uses: docker://ghcr.io/gitleaks/gitleaks@sha256:691af3c7c5a48b16f187ce3446d5f194838f91238f27270ed36eef6359a574d9
         with:
           args: dir --redact --verbose .
