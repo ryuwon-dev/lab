@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - namespaces/argocd.yaml
+  - namespaces/authentik.yaml
+  - namespaces/cert-manager.yaml
+  - namespaces/ingress-nginx.yaml
+  - namespaces/n8n.yaml
+  - namespaces/portal.yaml
+  - namespaces/sealed-secrets.yaml
+  - projects/ryuwon-platform.yaml
+  - applications/authentik.yaml
+  - applications/cert-manager.yaml
+  - applications/ingress-nginx.yaml
+  - applications/n8n.yaml
+  - applications/portal.yaml
+  - applications/sealed-secrets.yaml
+  - argocd/argocd-cm.yaml
+  - argocd/argocd-rbac-cm.yaml
+  - argocd/argocd-public-ingress.yaml
+  - cert-manager/clusterissuer-letsencrypt-http01.yaml
+  - ingress/authentik-public-ingress.yaml

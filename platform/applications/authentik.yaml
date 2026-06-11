@@ -1,0 +1,70 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: authentik
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: ryuwon-platform
+  destination:
+    namespace: authentik
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://charts.goauthentik.io
+    chart: authentik
+    targetRevision: 2026.2.2
+    helm:
+      releaseName: authentik
+      values: |
+        authentik:
+          existingSecret:
+            secretName: authentik
+        server:
+          ingress:
+            enabled: false
+          nodeSelector:
+            node-role.ryuwon.dev/app: "true"
+          tolerations:
+            - key: workload.ryuwon.dev/edge
+              operator: Equal
+              value: "true"
+              effect: NoSchedule
+        worker:
+          nodeSelector:
+            node-role.ryuwon.dev/app: "true"
+          tolerations:
+            - key: workload.ryuwon.dev/edge
+              operator: Equal
+              value: "true"
+              effect: NoSchedule
+        postgresql:
+          auth:
+            existingSecret: authentik-postgresql
+            database: authentik
+            username: authentik
+            secretKeys:
+              adminPasswordKey: postgres-password
+              userPasswordKey: password
+          primary:
+            nodeSelector:
+              node-role.ryuwon.dev/main-core: "true"
+            persistence:
+              size: 5Gi
+  ignoreDifferences:
+    - group: apps
+      kind: Deployment
+      name: authentik-server
+      namespace: authentik
+      jqPathExpressions:
+        - '.spec.template.metadata.annotations."checksum/secret"'
+    - group: apps
+      kind: Deployment
+      name: authentik-worker
+      namespace: authentik
+      jqPathExpressions:
+        - '.spec.template.metadata.annotations."checksum/secret"'
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true

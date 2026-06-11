@@ -1,0 +1,63 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-nginx
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: ryuwon-platform
+  destination:
+    namespace: ingress-nginx
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://kubernetes.github.io/ingress-nginx
+    chart: ingress-nginx
+    targetRevision: 4.15.1
+    helm:
+      releaseName: ingress-nginx
+      values: |
+        controller:
+          image:
+            repository: ryuwon-local/ingress-nginx/controller
+            tag: v1.15.1-nginx1.30.1-r1
+            digest: ""
+            pullPolicy: IfNotPresent
+          allowSnippetAnnotations: false
+          config:
+            annotations-risk-level: High
+          hostNetwork: true
+          dnsPolicy: ClusterFirstWithHostNet
+          publishService:
+            enabled: false
+          nodeSelector:
+            kubernetes.io/os: linux
+            node-role.ryuwon.dev/app: "true"
+          tolerations:
+            - key: workload.ryuwon.dev/edge
+              operator: Equal
+              value: "true"
+              effect: NoSchedule
+          service:
+            type: NodePort
+            nodePorts:
+              http: 31142
+              https: 31463
+  ignoreDifferences:
+    - group: "*"
+      kind: "*"
+      jqPathExpressions:
+        - '.metadata.annotations."kubectl.kubernetes.io/last-applied-configuration"'
+        - '.metadata.labels."app.kubernetes.io/managed-by"'
+        - '.metadata.labels."helm.sh/chart"'
+        - '.spec.template.metadata.labels."app.kubernetes.io/managed-by"'
+        - '.spec.template.metadata.labels."helm.sh/chart"'
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: ingress-nginx-admission
+      jqPathExpressions:
+        - ".webhooks[]?.clientConfig.caBundle"
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      - RespectIgnoreDifferences=true

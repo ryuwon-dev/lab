@@ -1,0 +1,25 @@
+.env
+.env.*
+!.env.example
+
+local/
+tmp/
+*.log
+*.pid
+*.state
+*.state.json
+*.kubeconfig
+kubeconfig*
+
+__pycache__/
+*.py[cod]
+.DS_Store
+
+# Keep raw secret material out of the public GitOps repo.
+*.key
+*.pem
+*.p12
+*.crt
+*.csr
+*.agekey
+secrets.local/

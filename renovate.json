@@ -1,0 +1,47 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended"
+  ],
+  "timezone": "Asia/Seoul",
+  "labels": [
+    "dependencies"
+  ],
+  "dependencyDashboard": true,
+  "prConcurrentLimit": 5,
+  "prHourlyLimit": 2,
+  "rebaseWhen": "conflicted",
+  "argocd": {
+    "managerFilePatterns": [
+      "/^platform/applications/.+\\.ya?ml$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/^platform/.+\\.ya?ml$/"
+    ]
+  },
+  "packageRules": [
+    {
+      "description": "Group GitHub Actions updates",
+      "matchManagers": [
+        "github-actions"
+      ],
+      "groupName": "github-actions"
+    },
+    {
+      "description": "Group Argo CD managed chart updates",
+      "matchManagers": [
+        "argocd"
+      ],
+      "groupName": "argocd-managed-charts"
+    },
+    {
+      "description": "Keep Kubernetes image updates reviewable",
+      "matchManagers": [
+        "kubernetes"
+      ],
+      "groupName": "kubernetes-images"
+    }
+  ]
+}

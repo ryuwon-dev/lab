@@ -1,0 +1,7 @@
+extends: default
+
+rules:
+  line-length:
+    level: disable
+  truthy:
+    check-keys: false

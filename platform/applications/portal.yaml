@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: portal
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: ryuwon-platform
+  destination:
+    namespace: portal
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/ryuwon-dev/lab.git
+    targetRevision: main
+    path: platform/workloads/portal
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
