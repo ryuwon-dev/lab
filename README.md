@@ -1,62 +1,76 @@
 # lab
 
-Clean public GitOps desired-state repository for the ryuwon homelab.
+ryuwon 홈랩의 public GitOps 저장소입니다. OCI 위에 올린 k3s 클러스터를
+Argo CD로 관리하며, 이 repo의 `platform/` 트리에서 클러스터의 애플리케이션 상태를 확인할 수 있습니다.
 
-Argo CD should reconcile Kubernetes desired state from this repository after
-the new public-safe tree is ready.
+앱 코드는 각 서비스 repo에서 관리하고, 빌드된 이미지를 어떤 namespace와
+Ingress로 배포할지를 여기서 정합니다. 현재 운영 중인 서비스 목록은
+[lab.ryuwon.me](https://lab.ryuwon.me)에서 확인할 수 있습니다.
 
-## Node Roles
+## Contents
 
-This public repo records only the minimum public role context needed to
-understand scheduling manifests. Workspace planning, topology history, live
-operation notes, and recovery procedures stay outside this repository.
+이 저장소는 클러스터를 구성하는 다음 요소들로 구성되어 있습니다
 
-```text
-ryuwon-core-01   main k3s server + embedded etcd
-ryuwon-core-02   k3s server + embedded etcd voter
-ryuwon-core-03   k3s server + embedded etcd voter
-ryuwon-edge-01   service/edge worker
-ryuwon-edge-02   service/edge worker
+* HTTP/HTTPS 라우팅 (ingress-nginx)
+* TLS 인증서 발급과 갱신 (cert-manager)
+* SSO 인증 (Authentik)
+* 암호화된 Secret 관리 (Sealed Secrets)
+* 워크플로 자동화 (n8n)
+* `lab.ryuwon.me` 서비스 포털 (portal)
+* 그 외 namespace, AppProject, Argo CD Application 선언
+* 서비스들도 추가될 예정입니다 :D
+
+## CI/CD Flow
+
+push/PR마다 yamllint, kustomize 렌더 + kubeconform 스키마 검증, actionlint, gitleaks secret 스캔을 실행합니다.
+검증까지만 담당하고, 배포는 클러스터 안의 Argo CD가 수행합니다.
+
+```mermaid
+flowchart LR
+  subgraph svc["서비스 repo (portal 등)"]
+    code["코드 push"] --> build["GitHub Actions<br/>이미지 빌드"]
+  end
+
+  subgraph lab["lab (이 저장소)"]
+    pr["manifest push / PR"] --> ci["CI 검증<br/>yamllint · kubeconform<br/>actionlint · gitleaks"] --> main["main"]
+  end
+
+  subgraph k3s["k3s 클러스터"]
+    argo["Argo CD"] e1@-->|"diff 검토 → 수동 sync"| apps["portal · n8n · ..."]
+  end
+
+  build e2@--> ghcr[("GHCR")]
+  ghcr e3@-->|"이미지 pull"| apps
+  main e4@-->|"watch"| argo
+  apps --> user(["lab.ryuwon.me"])
+
+  e1@{ animate: true }
+  e2@{ animate: true }
+  e3@{ animate: true }
+  e4@{ animate: true }
 ```
 
-`ryuwon-core-01` is the main core node. Public edge placement on a core node is
-transitional only; the target public edge node is `ryuwon-edge-01`.
 
-The Account A core node role names are the intended public operating names.
-Private addresses and migration backup details stay in local-only runbooks.
-
-## Repository Boundary
-
-Allowed:
-
-- Kubernetes manifests.
-- Argo CD Applications.
-- Co-located README files that explain manifest directories.
-- Placeholder or encrypted Secret manifests.
-- CI checks for manifests and policy.
-
-Not allowed:
-
-- Raw secrets.
-- kubeconfig.
-- SSH keys.
-- OCI credentials.
-- Public IP inventories.
-- Private IP inventories.
-- Backup dumps.
-- Local runtime logs or state files.
-- General docs, planning notes, topology history, and recovery runbooks.
-
-Workspace-level documentation belongs in the parent workspace `docs/` and
-`ops/` directories, not in `lab/docs/`.
-
-## Current Workloads
+## Layout
 
 ```text
-n8n      protected automation service
-portal   public service directory for lab.ryuwon.me
+platform/
+  bootstrap/      수동 적용하는 Argo CD root app
+  applications/   서비스별 child Application
+  projects/       Argo CD AppProject
+  namespaces/     namespace
+  workloads/      직접 관리하는 서비스 manifest (portal, n8n)
+  argocd/         Argo CD 설정
+  cert-manager/   ClusterIssuer 등 TLS 설정
+  ingress/        공통 Ingress
+  secrets/        secret 운영 메모와 placeholder
+  security/       보안 정책
+  monitoring/     모니터링
 ```
 
-The `portal` image is expected at `ghcr.io/ryuwon-dev/portal:main`. Do not sync
-the portal Application until that package is public or a reviewed private-image
-pull fallback exists. First cutover sync is manual after Argo CD diff review.
+
+## License & Inspiration
+
+MIT License. 자세한 내용은 [LICENSE](LICENSE)를 참고하세요.
+
+이 구성은 [pmh-only/lab](https://github.com/pmh-only/lab)에서 많은 영감을 받았습니다.
