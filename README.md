@@ -1,4 +1,4 @@
-# lab
+# ryuwon-dev/lab
 
 ryuwon 홈랩의 public GitOps 저장소입니다. OCI 위에 올린 k3s 클러스터를
 Argo CD로 관리하며, 이 repo의 `platform/` 트리에서 클러스터의 애플리케이션 상태를 확인할 수 있습니다.
