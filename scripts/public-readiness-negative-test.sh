@@ -3,6 +3,14 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+cleanup_paths=()
+cleanup() {
+  for path in "${cleanup_paths[@]}"; do
+    rm -rf "$path"
+  done
+}
+trap cleanup EXIT
+
 fail() {
   printf 'public-readiness-negative-test failed: %s\n' "$1" >&2
   exit 1
@@ -13,20 +21,24 @@ expect_gate_failure() {
   local expected="$2"
   local payload="$3"
   local tmpdir
+  local logdir
 
   tmpdir="$(mktemp -d .public-readiness-negative.XXXXXX)"
-  trap 'rm -rf "$tmpdir"' RETURN
+  logdir="$(mktemp -d "${TMPDIR:-/tmp}/public-readiness-negative.XXXXXX")"
+  cleanup_paths+=("$tmpdir" "$logdir")
 
   printf '%s\n' "$payload" > "$tmpdir/sample.txt"
 
-  if bash scripts/public-readiness.sh > "$tmpdir/stdout" 2> "$tmpdir/stderr"; then
+  if bash scripts/public-readiness.sh > "$logdir/stdout" 2> "$logdir/stderr"; then
     fail "$name sample passed unexpectedly"
   fi
 
-  if ! grep -q "$expected" "$tmpdir/stderr"; then
-    cat "$tmpdir/stderr" >&2
+  if ! grep -q "$expected" "$logdir/stderr"; then
+    cat "$logdir/stderr" >&2
     fail "$name sample failed for an unexpected reason"
   fi
+
+  rm -rf "$tmpdir" "$logdir"
 }
 
 expect_gate_failure \

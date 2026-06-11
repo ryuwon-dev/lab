@@ -10,11 +10,18 @@ fail() {
 
 scan_repo() {
   local pattern="$1"
+  local found=1
 
-  find . \
+  while IFS= read -r -d '' file; do
+    if grep -nIE "$pattern" "$file"; then
+      found=0
+    fi
+  done < <(find . \
     -path './.git' -prune -o \
     -path './scripts/public-readiness.sh' -prune -o \
-    -type f -print0 | xargs -0 grep -nIE "$pattern"
+    -type f -print0)
+
+  return "$found"
 }
 
 test -f README.md || fail "README.md is missing"
