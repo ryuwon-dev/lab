@@ -23,7 +23,7 @@ spec:
         app.kubernetes.io/instance: n8n
     spec:
       nodeSelector:
-        node-role.ryuwon.dev/app: "true"
+        node-role.ryuwon.dev/data: "true"
       tolerations:
         - key: workload.ryuwon.dev/edge
           operator: Equal

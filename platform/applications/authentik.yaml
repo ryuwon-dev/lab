@@ -48,7 +48,7 @@ spec:
               userPasswordKey: password
           primary:
             nodeSelector:
-              node-role.ryuwon.dev/main-core: "true"
+              node-role.ryuwon.dev/data: "true"
             persistence:
               size: 5Gi
   ignoreDifferences:
