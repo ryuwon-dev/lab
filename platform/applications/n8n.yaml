@@ -14,6 +14,14 @@ spec:
     repoURL: https://github.com/ryuwon-dev/lab.git
     targetRevision: main
     path: platform/workloads/n8n
+  ignoreDifferences:
+    - group: ""
+      kind: PersistentVolumeClaim
+      name: n8n-data
+      namespace: n8n
+      jsonPointers:
+        - /spec/volumeName
   syncPolicy:
     syncOptions:
       - CreateNamespace=true
+      - RespectIgnoreDifferences=true
