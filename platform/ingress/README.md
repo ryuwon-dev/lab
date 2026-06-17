@@ -2,5 +2,8 @@
 
 Ingress and public/private routing manifests live here.
 
-Target public edge is `ryuwon-edge`. Any public edge behavior on
-`ryuwon-core-01` is transitional only.
+Current public DNS still lands on `ryuwon-core-01`, so `ingress-nginx` is pinned
+to the main core node.
+
+`ryuwon-edge` remains the target public edge after DNS, firewall, and ingress
+scheduling are moved together.

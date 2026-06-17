@@ -33,6 +33,7 @@ spec:
           nodeSelector:
             kubernetes.io/os: linux
             node-role.ryuwon.dev/app: "true"
+            node-role.ryuwon.dev/main-core: "true"
           tolerations:
             - key: workload.ryuwon.dev/edge
               operator: Equal
