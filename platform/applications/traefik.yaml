@@ -1,0 +1,89 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+spec:
+  project: ryuwon-platform
+  destination:
+    namespace: traefik
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://traefik.github.io/charts
+    chart: traefik
+    targetRevision: 41.0.0
+    helm:
+      releaseName: traefik
+      values: |
+        deployment:
+          replicas: 2
+        updateStrategy:
+          type: RollingUpdate
+          rollingUpdate:
+            maxUnavailable: 1
+            maxSurge: 0
+        ingressClass:
+          enabled: true
+          isDefaultClass: false
+          name: traefik
+        ingressRoute:
+          dashboard:
+            enabled: false
+        providers:
+          kubernetesCRD:
+            enabled: true
+            ingressClass: traefik
+            allowExternalNameServices: true
+          kubernetesIngress:
+            enabled: true
+            ingressClass: traefik
+            allowExternalNameServices: true
+            publishedService:
+              enabled: false
+        hostNetwork: false
+        service:
+          spec:
+            type: ClusterIP
+        ports:
+          web:
+            port: 8000
+            hostPort: 80
+          websecure:
+            port: 8443
+            hostPort: 443
+            http:
+              tls:
+                enabled: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop: [ALL]
+            add: [NET_BIND_SERVICE]
+          readOnlyRootFilesystem: true
+        nodeSelector:
+          kubernetes.io/os: linux
+          node-role.ryuwon.dev/app: "true"
+        tolerations:
+          - key: workload.ryuwon.dev/edge
+            operator: Equal
+            value: "true"
+            effect: NoSchedule
+        affinity:
+          podAntiAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              - labelSelector:
+                  matchExpressions:
+                    - key: app.kubernetes.io/name
+                      operator: In
+                      values:
+                        - traefik
+                    - key: app.kubernetes.io/instance
+                      operator: In
+                      values:
+                        - traefik-traefik
+                topologyKey: kubernetes.io/hostname
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

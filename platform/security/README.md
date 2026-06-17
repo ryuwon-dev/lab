@@ -12,15 +12,17 @@ There is intentionally no active `NetworkPolicy` manifest yet.
 
 Reason:
 
-- `ingress-nginx` currently uses `hostNetwork: true`.
-- A namespace/pod-based ingress allow policy may not match host-networked
-  ingress traffic consistently.
+- Traefik currently uses `hostPort` for public `80` and `443`.
+- A namespace/pod-based ingress allow policy must be checked against host-port
+  traffic before enforcement.
+- Traefik permits ExternalName services only for the current n8n Authentik
+  outpost shim. Treat additional ExternalName routes as a security review item.
 - n8n still needs named egress exceptions before a default egress deny is safe.
 
 Before adding active `NetworkPolicy` resources:
 
-1. Confirm how ingress-nginx traffic appears to workload pods.
-2. Decide whether ingress-nginx keeps `hostNetwork`.
+1. Confirm how Traefik traffic appears to workload pods.
+2. Decide whether Traefik keeps `hostPort`.
 3. Add a portal-only ingress policy first.
 4. Add n8n ingress policy second.
 5. Add egress restrictions only after required destinations are named.

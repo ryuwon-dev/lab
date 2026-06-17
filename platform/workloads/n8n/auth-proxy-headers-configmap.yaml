@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: n8n-auth-proxy-headers
-  namespace: n8n
-data:
-  X-Forwarded-Host: $http_host

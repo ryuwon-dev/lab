@@ -1,3 +1,24 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: n8n-outpost
+  namespace: n8n
+  annotations:
+    argocd.argoproj.io/sync-wave: "20"
+spec:
+  ingressClassName: traefik
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`n8n.ryuwon.me`) && PathPrefix(`/outpost.goauthentik.io`)
+      kind: Rule
+      priority: 100
+      services:
+        - name: authentik-outpost
+          port: 80
+  tls:
+    secretName: n8n-public-tls
+---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -6,14 +27,12 @@ metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "20"
     cert-manager.io/cluster-issuer: letsencrypt-http01
-    nginx.ingress.kubernetes.io/auth-url: http://authentik-server.authentik.svc.cluster.local/outpost.goauthentik.io/auth/nginx
-    nginx.ingress.kubernetes.io/auth-signin: https://n8n.ryuwon.me/outpost.goauthentik.io/start?rd=$scheme://$http_host$escaped_request_uri
-    nginx.ingress.kubernetes.io/auth-proxy-set-headers: n8n/n8n-auth-proxy-headers
-    nginx.ingress.kubernetes.io/auth-response-headers: Set-Cookie,X-authentik-username,X-authentik-groups,X-authentik-entitlements,X-authentik-email,X-authentik-name,X-authentik-uid
-    nginx.ingress.kubernetes.io/proxy-buffer-size: 32k
-    nginx.ingress.kubernetes.io/proxy-body-size: 16m
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.middlewares: n8n-authentik-forward-auth@kubernetescrd
+    traefik.ingress.kubernetes.io/router.priority: "10"
+    traefik.ingress.kubernetes.io/router.tls: "true"
 spec:
-  ingressClassName: nginx
+  ingressClassName: traefik
   tls:
     - hosts:
         - n8n.ryuwon.me
@@ -22,13 +41,6 @@ spec:
     - host: n8n.ryuwon.me
       http:
         paths:
-          - path: /outpost.goauthentik.io
-            pathType: Prefix
-            backend:
-              service:
-                name: authentik-outpost
-                port:
-                  number: 80
           - path: /
             pathType: Prefix
             backend:
