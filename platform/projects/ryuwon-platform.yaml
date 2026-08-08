@@ -29,6 +29,8 @@ spec:
     - server: https://kubernetes.default.svc
       namespace: portal
     - server: https://kubernetes.default.svc
+      namespace: status
+    - server: https://kubernetes.default.svc
       namespace: sealed-secrets
   clusterResourceWhitelist:
     - group: "*"

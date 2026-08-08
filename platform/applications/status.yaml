@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: status
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "30"
+spec:
+  project: ryuwon-platform
+  destination:
+    namespace: status
+    server: https://kubernetes.default.svc
+  source:
+    repoURL: https://github.com/ryuwon-dev/lab.git
+    targetRevision: main
+    path: platform/workloads/status
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true

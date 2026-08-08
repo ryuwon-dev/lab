@@ -12,3 +12,5 @@ Current workloads:
 
 - `n8n`: protected automation service with transitional local-path state.
 - `portal`: stateless public service directory for `lab.ryuwon.me`.
+- `status`: stateless low-information public status page for
+  `status.ryuwon.me`.

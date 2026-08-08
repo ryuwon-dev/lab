@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Ryuwon Lab public service status">
+    <title>Ryuwon Status</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%23101010'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="page-header" aria-label="상태 페이지 머리말">
+        <a class="brand" href="https://ryuwon.me" aria-label="Ryuwon 홈">
+          <span class="brand-mark">R</span>
+          <span class="brand-copy">
+            <strong>Ryuwon Status</strong>
+            <em>홈랩 공개 상태</em>
+          </span>
+        </a>
+        <button class="refresh-button" type="button" id="refresh-control">상태 새로고침</button>
+      </header>
+
+      <section class="notice checking" id="status-notice" aria-labelledby="notice-title">
+        <div class="notice-banner">
+          <span class="state-symbol" aria-hidden="true"></span>
+          <h1 id="notice-title">주소를 확인하는 중입니다</h1>
+        </div>
+        <div class="notice-body">
+          <p id="notice-copy">밖에서 열어볼 수 있는 주소만 확인합니다.</p>
+          <p class="notice-meta" id="notice-meta">잠시만 기다려 주세요.</p>
+        </div>
+      </section>
+
+      <section class="status-board" aria-labelledby="system-title">
+        <div class="board-head">
+          <h2 id="system-title">System status</h2>
+          <div class="date-range" aria-label="표시 기간">
+            <span aria-hidden="true">&lsaquo;</span>
+            <span id="status-range">최근 상태 범위를 준비하고 있습니다.</span>
+            <span aria-hidden="true">&rsaquo;</span>
+          </div>
+        </div>
+
+        <div class="service-list" id="service-list"></div>
+        <div class="segment-tooltip" id="segment-tooltip" role="tooltip" hidden></div>
+      </section>
+
+      <section class="history-action" aria-label="상태 기록">
+        <a class="history-link" href="#public-note">상태 기록 기준 보기</a>
+      </section>
+
+      <section class="policy" id="public-note" aria-labelledby="policy-title">
+        <h2 id="policy-title">공개 범위</h2>
+        <p>
+          이 페이지는 공개 주소의 접속 상태와 공개해도 되는 상태 기록만 보여줍니다.
+          노드명, 사설망, 저장소, 백업 위치, 내부 장애 원인은 올리지 않습니다.
+        </p>
+      </section>
+    </main>
+
+    <template id="service-template">
+      <article class="service-row">
+        <div class="service-head">
+          <div class="service-title">
+            <span class="service-status-icon" aria-hidden="true"></span>
+            <strong class="service-name"></strong>
+            <span class="service-info" aria-label="공개해도 되는 상태만 표시합니다">i</span>
+            <span class="component-count"></span>
+            <span class="service-chevron" aria-hidden="true"></span>
+          </div>
+          <span class="history-value"></span>
+        </div>
+        <p class="service-label"></p>
+        <div class="availability-strip" aria-label=""></div>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

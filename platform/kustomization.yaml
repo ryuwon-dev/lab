@@ -7,6 +7,7 @@ resources:
   - namespaces/traefik.yaml
   - namespaces/n8n.yaml
   - namespaces/portal.yaml
+  - namespaces/status.yaml
   - namespaces/sealed-secrets.yaml
   - projects/ryuwon-platform.yaml
   - applications/authentik.yaml
@@ -14,6 +15,7 @@ resources:
   - applications/traefik.yaml
   - applications/n8n.yaml
   - applications/portal.yaml
+  - applications/status.yaml
   - applications/sealed-secrets.yaml
   - argocd/argocd-cmd-params-cm.yaml
   - argocd/argocd-cm.yaml

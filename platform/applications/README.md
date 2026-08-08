@@ -13,3 +13,4 @@ Current local workload Applications:
 
 - `n8n`
 - `portal`
+- `status`
