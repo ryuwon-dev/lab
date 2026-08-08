@@ -1,5 +1,69 @@
 {
-  "checkedAt": null,
-  "generatedBy": "bootstrap",
-  "services": {}
+  "checkedAt": "2026-08-08T16:42:36.168Z",
+  "generatedBy": "scripts/check-health.mjs",
+  "services": {
+    "lab-portal": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "authentik": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "ok",
+      "latencyMs": 294,
+      "statusCode": 200,
+      "message": "HTTP 200"
+    },
+    "argocd": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "ok",
+      "latencyMs": 48,
+      "statusCode": 200,
+      "message": "HTTP 200"
+    },
+    "n8n": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "ok",
+      "latencyMs": 296,
+      "statusCode": 200,
+      "message": "HTTP 200"
+    },
+    "status": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "grafana": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "vaultwarden": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "docs": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "go": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    },
+    "kospi-dashboard": {
+      "checkedAt": "2026-08-08T16:42:36.168Z",
+      "health": "unknown",
+      "latencyMs": null,
+      "message": "planned"
+    }
+  }
 }
