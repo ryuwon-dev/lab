@@ -5,3 +5,19 @@ resources:
   - deployment.yaml
   - service.yaml
   - ingress.yaml
+configMapGenerator:
+  - name: portal-static
+    files:
+      - public/index.html
+      - public/styles.css
+      - public/app.js
+      - public/services.json
+      - public/health.json
+      - public/topology.svg
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
+  labels:
+    app.kubernetes.io/name: portal
+    app.kubernetes.io/instance: portal

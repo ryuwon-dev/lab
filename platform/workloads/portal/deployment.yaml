@@ -35,8 +35,8 @@ spec:
           type: RuntimeDefault
       containers:
         - name: portal
-          image: ghcr.io/ryuwon-dev/portal:main
-          imagePullPolicy: Always
+          image: nginxinc/nginx-unprivileged:1.27-alpine
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8080
@@ -68,6 +68,14 @@ spec:
             capabilities:
               drop:
                 - ALL
+          volumeMounts:
+            - name: portal-static
+              mountPath: /usr/share/nginx/html
+              readOnly: true
+      volumes:
+        - name: portal-static
+          configMap:
+            name: portal-static
 ---
 apiVersion: policy/v1
 kind: PodDisruptionBudget

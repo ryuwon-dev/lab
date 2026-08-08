@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RYUWON LAB</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='10' fill='%23c92f2a'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-size='30' font-weight='800' fill='white'%3ER%3C/text%3E%3C/svg%3E">
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="RYUWON LAB 홈">
+        <span class="brand-mark">R</span>
+        <span>
+          <strong>RYUWON LAB</strong>
+          <em>홈랩 서비스 포털</em>
+        </span>
+      </a>
+
+      <nav class="topnav" aria-label="주요 메뉴">
+        <a href="#services">서비스</a>
+        <a href="#infra">인프라</a>
+        <a href="#monitoring">모니터링</a>
+        <a href="#docs">문서</a>
+        <a href="#settings">설정</a>
+      </nav>
+
+      <a class="dashboard-link" href="#dashboard">대시보드</a>
+    </header>
+
+    <main>
+      <section class="poster-hero" aria-label="RYUWON LAB 소개">
+        <div class="hero-left">
+          <h1>내가 만드는 클라우드,<br>내가 운영하는 서비스</h1>
+          <p>코드, 인프라, 데이터, 자동화까지 모든 것을 직접 설계하고 관리합니다.</p>
+          <a class="primary-action" href="#dashboard">대시보드로 이동 <span aria-hidden="true">→</span></a>
+
+          <div class="quick-links-static" aria-label="빠른 링크">
+            <p>QUICK LINKS</p>
+            <a href="https://blog.ryuwon.me">
+              <span aria-hidden="true">◎</span>
+              블로그
+            </a>
+            <a href="https://github.com/ryuwon-dev">
+              <span aria-hidden="true">⌘</span>
+              GitHub
+            </a>
+            <a href="https://docs.ryuwon.me">
+              <span aria-hidden="true">▣</span>
+              문서
+            </a>
+            <a href="https://go.ryuwon.me">
+              <span aria-hidden="true">⌑</span>
+              북마크
+            </a>
+          </div>
+        </div>
+
+        <div class="hero-collage" aria-hidden="true">
+          <p class="hand-note">Build - Operate - Automate</p>
+
+          <svg class="sketch sketch-tower" viewBox="0 0 90 220" role="presentation">
+            <path d="M45 12v196M31 61h28M25 92h40M18 130h54M12 172h66"></path>
+            <path d="M45 12 31 61l14 31 14-31zM25 92l20-31 20 31M18 130l27-38 27 38M12 172l33-42 33 42"></path>
+            <path d="M36 208h18"></path>
+          </svg>
+
+          <svg class="sketch sketch-rack" viewBox="0 0 180 160" role="presentation">
+            <rect x="20" y="18" width="140" height="124" rx="4"></rect>
+            <path d="M32 42h116M32 66h116M32 90h116M32 114h116"></path>
+            <circle cx="44" cy="30" r="3"></circle>
+            <circle cx="55" cy="30" r="3"></circle>
+            <path d="M74 30h64M44 54h78M44 78h92M44 102h74M44 126h86"></path>
+          </svg>
+
+          <svg class="sketch sketch-city" viewBox="0 0 260 150" role="presentation">
+            <path d="M16 132h230"></path>
+            <path d="M28 132V62h26v70M70 132V40h42v92M132 132V78h32v54M184 132V52h38v80"></path>
+            <path d="M36 78h10M36 94h10M36 110h10M82 58h9M96 58h9M82 76h9M96 76h9M82 94h9M96 94h9M193 70h18M193 88h18M193 106h18"></path>
+          </svg>
+
+          <div class="red-label">
+            <span>RYUWON</span>
+            <span>LAB</span>
+          </div>
+
+          <div class="code-note">
+            <pre>// infrastructure as code
+resource "ryuwon_lab" {
+  name   = "homelab"
+  region = "ap-northeast-2"
+}</pre>
+          </div>
+
+          <div class="automation-note">
+            <strong>Automation</strong>
+            <div>
+              <span>▷</span>
+              <i></i>
+              <span>□</span>
+              <i></i>
+              <span>⚙</span>
+            </div>
+          </div>
+
+          <svg class="sketch sketch-book" viewBox="0 0 220 150" role="presentation">
+            <path d="M24 35c34-14 62-9 86 8v84c-28-16-54-20-86-8z"></path>
+            <path d="M110 43c26-18 56-22 86-8v84c-32-12-58-8-86 8z"></path>
+            <path d="M110 43v84M44 58h40M44 76h42M44 94h36M132 58h42M132 76h38M132 94h34"></path>
+          </svg>
+
+          <div class="sticky-note">
+            <span>Homelab</span>
+            <span>by</span>
+            <span>Ryuwon</span>
+          </div>
+
+          <div class="mini-health">
+            <span>SYSTEM HEALTH</span>
+            <svg viewBox="0 0 150 56" role="presentation">
+              <path d="M6 42c16-7 26-5 39-13 16-10 30 0 45-9 14-8 23-9 40-16"></path>
+            </svg>
+            <strong>99.93%</strong>
+          </div>
+        </div>
+      </section>
+
+      <section class="dashboard" id="dashboard" aria-label="서비스 대시보드">
+        <div class="service-board" id="services">
+          <div class="toolbar">
+            <label class="search">
+              <span aria-hidden="true">⌕</span>
+              <input id="service-search" type="search" autocomplete="off" placeholder="서비스 검색">
+            </label>
+            <select id="category-filter" aria-label="카테고리 필터">
+              <option value="all">전체 카테고리</option>
+              <option value="public">공개</option>
+              <option value="admin">관리</option>
+              <option value="private">비공개</option>
+            </select>
+            <select id="status-filter" aria-label="상태 필터">
+              <option value="all">전체 상태</option>
+              <option value="ok">정상</option>
+              <option value="degraded">경고</option>
+              <option value="down">장애</option>
+              <option value="unknown">미확인</option>
+            </select>
+            <div class="view-buttons" aria-hidden="true">
+              <span>▦</span>
+              <span>☰</span>
+            </div>
+          </div>
+
+          <div class="board-title">
+            <h2>서비스 <span id="service-count">0</span></h2>
+          </div>
+
+          <section class="service-grid" id="service-grid" aria-label="서비스 목록"></section>
+          <a class="view-all" href="#services">모든 서비스 보기 <span aria-hidden="true">→</span></a>
+        </div>
+
+        <aside class="system-panel" aria-label="시스템 요약">
+          <section class="summary-card">
+            <h2>시스템 요약</h2>
+            <dl id="system-summary"></dl>
+          </section>
+
+          <section class="activity-card">
+            <h2>최근 활동</h2>
+            <ul id="recent-activity"></ul>
+            <a href="#monitoring">모든 활동 보기 <span aria-hidden="true">→</span></a>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <template id="service-card-template">
+      <article class="service-card">
+        <a target="_blank" rel="noreferrer">
+          <span class="service-card__icon" aria-hidden="true"></span>
+          <span class="service-card__title">
+            <strong></strong>
+            <em></em>
+          </span>
+          <span class="service-card__desc"></span>
+          <span class="service-card__status"></span>
+        </a>
+      </article>
+    </template>
+
+    <script src="./app.js"></script>
+  </body>
+</html>

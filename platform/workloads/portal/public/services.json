@@ -1,0 +1,103 @@
+{
+  "services": [
+    {
+      "id": "lab-portal",
+      "name": "랩 포털",
+      "url": "https://lab.ryuwon.me",
+      "access": "공개",
+      "stage": "planned",
+      "owner": "포털",
+      "group": "public"
+    },
+    {
+      "id": "authentik",
+      "name": "인증 게이트",
+      "url": "https://auth.ryuwon.me",
+      "access": "로그인 공개",
+      "stage": "live",
+      "owner": "인증",
+      "group": "public",
+      "healthCheck": {
+        "url": "https://auth.ryuwon.me"
+      }
+    },
+    {
+      "id": "argocd",
+      "name": "배포 콘솔",
+      "url": "https://argo.ryuwon.me",
+      "access": "보호됨",
+      "stage": "live",
+      "owner": "플랫폼",
+      "group": "admin",
+      "healthCheck": {
+        "url": "https://argo.ryuwon.me"
+      }
+    },
+    {
+      "id": "n8n",
+      "name": "자동화",
+      "url": "https://n8n.ryuwon.me",
+      "access": "보호됨",
+      "stage": "gated",
+      "owner": "자동화",
+      "group": "admin",
+      "healthCheck": {
+        "url": "https://n8n.ryuwon.me"
+      }
+    },
+    {
+      "id": "status",
+      "name": "상태판",
+      "url": "https://status.ryuwon.me",
+      "access": "공개",
+      "stage": "planned",
+      "owner": "운영",
+      "group": "public"
+    },
+    {
+      "id": "grafana",
+      "name": "관측 보드",
+      "url": "https://grafana.ryuwon.me",
+      "access": "보호됨",
+      "stage": "planned",
+      "owner": "관측",
+      "group": "admin"
+    },
+    {
+      "id": "vaultwarden",
+      "name": "비밀번호 금고",
+      "url": "https://vault.ryuwon.me",
+      "access": "보호됨",
+      "stage": "planned",
+      "owner": "보안",
+      "group": "private"
+    },
+    {
+      "id": "docs",
+      "name": "문서고",
+      "url": "https://docs.ryuwon.me",
+      "access": "비공개",
+      "stage": "planned",
+      "owner": "운영",
+      "group": "private"
+    },
+    {
+      "id": "go",
+      "name": "짧은 링크",
+      "url": "https://go.ryuwon.me",
+      "access": "관리자 전용",
+      "stage": "planned",
+      "owner": "서비스",
+      "group": "private"
+    },
+    {
+      "id": "kospi-dashboard",
+      "name": "코스피 지표",
+      "url": "https://kospi.ryuwon.me",
+      "access": "읽기 전용 공개",
+      "stage": "planned",
+      "owner": "서비스",
+      "group": "public"
+    }
+  ]
+}
